@@ -20,90 +20,132 @@ public class GestionDeStock {
         System.out.println("4- Salir");
 
         do{
+            chequeoStock();
             System.out.println("Seleccione una opción: ");
             opcion = scanner.nextInt();
             switch (opcion) {
                 case 1:
                         System.out.println("<<<<ALTA DE PRODUCTO>>>>");
-                        System.out.print("Ingrese la categoria del producto a agregar: ");
+                        System.out.println("Ingrese la categoria del producto a agregar: ");
                         System.out.println("1- Alimentos");
                         System.out.println("2- Tecnologia");
                         System.out.println("3- Perfumeria");
 
                         categoria = scanner.nextInt();
-                        agregar(categoria);
+                        altaProducto(categoria);
 
                     break;
-                case 2:
-                    
+                case 2: listar();
                     break;
-                case 3:
-                    
+                case 3: venta();    
                     break;
                 case 4:
-                    
+                        System.out.println("SALIENDO DEL PROGRAMA....");
                     break;
             
                 default:
-
+                        System.out.println("Ingrese una opcion valida, por favor!");
                     break;
             }
         }while(opcion < 4);
 
     }
-    public static void agregar(int categoria){
-       
-
-        switch (categoria) {
-            case 1:
-                    altaAlimento();
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                
-                break;
-        
-            default:
-                break;
+    public static void chequeoStock(){
+        System.out.println("CARGANDO STOCK....");
+        for (int i = 0; i < productos.length; i++) {
+            if (productos[i] !=null) {
+                if (productos[i].stock == 0) {
+                    productos[i] = null;
+                }
+            } 
         }
+        System.out.println("STOCK CARGADO....");
+        return;
     }
-    public static void altaAlimento(){
+    public static void venta(){
+        scanner.nextLine();
+        String nombreVenta;
+        System.out.println("Introduce el nombre del producto que desea comprar:");
+        nombreVenta = scanner.nextLine().toLowerCase();
+        
+        for (int i = 0; i < productos.length; i++) {
+            if (productos[i] !=null) {
+                if (productos[i].nombre.equals(nombreVenta)) {
+                productos[i].stock --;
+                System.out.println("¡¡PRODUCTO VENDIDO!!");
+                System.out.println("ID: " + productos[i].id);
+                System.out.println("Nombre: " + productos[i].nombre);
+                System.out.println("Precio: " + productos[i].calcularPrecioFinal());
+                System.out.println("Precio (sin iva): " + productos[i].precioBase);
+                System.out.println("Stock: " + productos[i].stock);
+
+                return;
+                }
+            }
+        }
+        System.out.println("Nos quedamos sin STOCK...PERO LE PODEMOS OFRECER: ");
+        listar();
+        return;
+    }
+    public static void listar(){
+        for (int i = 0; i < productos.length; i++) {
+            if (productos[i] != null) {
+                System.out.println("ID: " + productos[i].id);
+                System.out.println("Nombre: " + productos[i].nombre);
+                System.out.println("Precio: " + productos[i].calcularPrecioFinal());
+                System.out.println("Precio (sin iva): " + productos[i].precioBase);
+                System.out.println("Stock: " + productos[i].stock);
+            }
+        }
+        return;
+    }
+    public static void altaProducto( int categoria){
         
         String nombre;
         String id;
         Double precioBase;
         int stock;
-        Boolean valid = true;
+        
         
         System.out.println("**Alta de Alimento**");
+        scanner.nextLine();
             System.out.print("Nombre: ");
-                nombre = scanner.nextLine();
+                nombre = scanner.nextLine().toLowerCase();
             System.out.print("\nPrecio (sin iva): ");
                 precioBase = scanner.nextDouble();
+            scanner.nextLine();    
             System.out.print("\nId: ");
-                id = scanner.nextLine();
+                id = scanner.nextLine().toLowerCase();
             System.out.print("\nStock: ");
                 stock = scanner.nextInt();
-            
+            scanner.nextLine();
         for (int i = 0; i < productos.length; i++) {
-            //se valida si hay stock del producto, si hay se suma y no ocupa un lugar nuevo en el almacen
-            for (int j = 0; j < productos.length && valid; j++) {
-                if (productos[i].nombre.equals(nombre) && productos[j].id == id) {
-                    productos[j].stock += stock;
-                    
-                    System.out.println("Se sumo al stock!");
-                    return;
+            if (productos[i] !=null) {
+                if (productos[i].nombre.equals(nombre)) {
+                productos[i].stock += stock;
+                System.out.println("Se sumo el Producto al Stock!");
+                return;
                 }
             }
-            valid = false; //EVITAMOS QUE HAGA UNA VALIDACION YA HECHA!
-            //si no hay stock y hay lugar disponible, se agrega
-            if (productos[i] == null) { 
-                productos[i] = new Alimentos(nombre, precioBase, id, stock);
-                System.out.println("Producto Agregado!");
+        }
+        for (int i = 0; i < productos.length; i++) {
+            if (productos[i]==null) {
+                switch (categoria) {
+                    case 1://ALIMENTOS
+                            productos[i] = new Alimentos(nombre, precioBase, id, stock);
+                        break;
+                    case 2://TECNOLOGIA
+                            productos[i] = new Tecnologia(nombre, precioBase, id, stock);
+                        break;
+                    case 3://PERFUMERIA
+                            productos[i] = new Perfumeria(nombre, precioBase, id, stock);
+                        break;
+                    default: System.err.println("Seleccione una opcion valida!");
+                        return;
+                }
+                System.out.println("El producto ha sido agregado con exito!");
                 return;
-            }
+            }  
         }
         System.out.println("---NO HAY MAS ESPACIO EN EL DEPOSITO---");
         return;
