@@ -3,15 +3,11 @@ import java.util.Scanner;
 public class GestionDeStock {
 
     static  Producto[] productos = new Producto[10];// Creamos un array de productos con capacidad para 10 productos
-    static  Scanner scanner = new Scanner(System.in);
+    static  Scanner scanner = new Scanner(System.in);// Scanner para leer entradas del usuario
     public static void main(String[] args) throws Exception {
         
         int opcion;
         int categoria;
-        // String nombre = scanner.nextLine();
-        // String id = scanner.nextLine();
-        // Double precioBase = scanner.nextDouble();
-        // int stock =  scanner.nextInt();
         
         System.out.println("=== SISTEMA DE AUTOGESTIÓN DE SUPERMERCADO ===");
         System.out.println("1- Alta de producto");
@@ -19,18 +15,18 @@ public class GestionDeStock {
         System.out.println("3- Venta (simulación)");
         System.out.println("4- Salir");
 
-        do{
-            chequeoStock();
+        do{//Bucle principal del programa
+            chequeoStock();//Llamada al metodo que chequea el stock
             System.out.println("Seleccione una opción: ");
             opcion = scanner.nextInt();
-            switch (opcion) {
+            switch (opcion) {//Menu de opciones 
                 case 1:
                         System.out.println("<<<<ALTA DE PRODUCTO>>>>");
                         System.out.println("Ingrese la categoria del producto a agregar: ");
                         System.out.println("1- Alimentos");
                         System.out.println("2- Tecnologia");
                         System.out.println("3- Perfumeria");
-
+                        
                         categoria = scanner.nextInt();
                         altaProducto(categoria);
 
@@ -50,28 +46,28 @@ public class GestionDeStock {
         }while(opcion < 4);
 
     }
-    public static void chequeoStock(){
+    public static void chequeoStock(){//Metodo que chequea el stock de los productos
         System.out.println("CARGANDO STOCK....");
         for (int i = 0; i < productos.length; i++) {
-            if (productos[i] !=null) {
+            if (productos[i] !=null) {//Si el producto no es nulo
                 if (productos[i].stock == 0) {
-                    productos[i] = null;
+                    productos[i] = null;//Eliminamos el producto del array si su stock es 0
                 }
             } 
         }
         System.out.println("STOCK CARGADO....");
         return;
     }
-    public static void venta(){
-        scanner.nextLine();
+    public static void venta(){//Metodo que simula una venta
+        scanner.nextLine();//Limpiamos el buffer del scanner
         String nombreVenta;
         System.out.println("Introduce el nombre del producto que desea comprar:");
         nombreVenta = scanner.nextLine().toLowerCase();
         
         for (int i = 0; i < productos.length; i++) {
             if (productos[i] !=null) {
-                if (productos[i].nombre.equals(nombreVenta)) {
-                productos[i].stock --;
+                if (productos[i].nombre.equals(nombreVenta)) {//Si el nombre del producto coincide con el nombre ingresado
+                productos[i].stock --;//Disminuimos el stock en 1
                 System.out.println("¡¡PRODUCTO VENDIDO!!");
                 System.out.println("ID: " + productos[i].id);
                 System.out.println("Nombre: " + productos[i].nombre);
@@ -87,7 +83,7 @@ public class GestionDeStock {
         listar();
         return;
     }
-    public static void listar(){
+    public static void listar(){//Metodo que lista los productos en stock
         for (int i = 0; i < productos.length; i++) {
             if (productos[i] != null) {
                 System.out.println("ID: " + productos[i].id);
@@ -99,7 +95,7 @@ public class GestionDeStock {
         }
         return;
     }
-    public static void altaProducto( int categoria){
+    public static void altaProducto( int categoria){//Metodo que da de alta un producto
         
         String nombre;
         String id;
@@ -121,7 +117,7 @@ public class GestionDeStock {
             scanner.nextLine();
         for (int i = 0; i < productos.length; i++) {
             if (productos[i] !=null) {
-                if (productos[i].nombre.equals(nombre)) {
+                if (productos[i].nombre.equals(nombre)) {//Si el nombre del producto ya existe, sumamos el stock
                 productos[i].stock += stock;
                 System.out.println("Se sumo el Producto al Stock!");
                 return;
@@ -130,7 +126,7 @@ public class GestionDeStock {
         }
         for (int i = 0; i < productos.length; i++) {
             if (productos[i]==null) {
-                switch (categoria) {
+                switch (categoria) {//Segun la categoria, creamos un objeto de la clase correspondiente
                     case 1://ALIMENTOS
                             productos[i] = new Alimentos(nombre, precioBase, id, stock);
                         break;
