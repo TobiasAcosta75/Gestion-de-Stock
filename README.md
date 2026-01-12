@@ -1,18 +1,11 @@
-## Getting Started
+## Resumen de Funcionalidades del Programa
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Al terminar, tu consola permitirá:
 
-## Folder Structure
+1.  **Alta de Producto:** El usuario elige si crea un "Alimento", "Tecnología" o "Perfumería", ingresa datos y el sistema lo guarda en el primer hueco libre del arreglo. Si el producto ya existe, entonces solo se sumara al stock, si el stock llega a 0, el producto sera eliminado.
+    
+2.  **Listado:** Muestra todos los productos cargados con su precio final ya calculado.
+    
+3.  **Venta (Opcional):** Busca un producto por nombre (usando `equals` o `contains`) y simula una venta, restándolo del stock o mostrándolo en pantalla.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Nota: A las Clases "Perfumería" y "Alimentos" se le aplicara un descuento del 20% y 10%.
